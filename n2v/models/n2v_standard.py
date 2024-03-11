@@ -250,23 +250,23 @@ class N2V(CARE):
                                       perc_pix=self.config.n2v_perc_pix,
                                       shape=val_patch_shape,
                                       value_manipulation=manipulator)
-        self.callbacks.append(CARETensorBoardImage(model=self.keras_model, data=(validation_X, validation_X),
-                                                   log_dir=str(self.logdir / 'logs' / 'images'),
-                                                   n_images=3, prob_out=False))
+        #self.callbacks.append(CARETensorBoardImage(model=self.keras_model, data=(validation_X, validation_X),
+        #                                           log_dir=str(self.logdir / 'logs' / 'images'),
+        #                                           n_images=3, prob_out=False))
 
         history = self.keras_model.fit(iter(training_data), validation_data=(validation_X, validation_Y),
                                        epochs=epochs, steps_per_epoch=steps_per_epoch,
                                        callbacks=self.callbacks, verbose=1)
 
         if self.basedir is not None:
-            self.keras_model.save_weights(str(self.logdir / 'weights_last.h5'))
+            self.keras_model.save_weights(str(self.logdir / 'weights_last.weights.h5'))
 
             if self.config.train_checkpoint is not None:
                 print()
                 self._find_and_load_weights(self.config.train_checkpoint)
                 try:
                     # remove temporary weights
-                    (self.logdir / 'weights_now.h5').unlink()
+                    (self.logdir / 'weights_now.weights.h5').unlink()
                 except FileNotFoundError:
                     pass
 
@@ -302,7 +302,7 @@ class N2V(CARE):
                     ModelCheckpoint(str(self.logdir / self.config.train_checkpoint), save_best_only=True,
                                     save_weights_only=True))
                 self.callbacks.append(
-                    ModelCheckpoint(str(self.logdir / 'weights_now.h5'), save_best_only=False, save_weights_only=True))
+                    ModelCheckpoint(str(self.logdir / 'weights_now.weights.h5'), save_best_only=False, save_weights_only=True))
 
             if self.config.train_tensorboard:
                 from tensorflow.keras.callbacks import TensorBoard
@@ -492,7 +492,7 @@ class N2V(CARE):
 
         test_output = self.predict_bioimageio(test_img, axes)
 
-        model_path = result_path / 'tf_model.zip'
+        model_path = result_path / 'tf_model.h5.zip'
         config_path = result_path / 'config.json'
         save_model_tf(
             model=self.keras_model,

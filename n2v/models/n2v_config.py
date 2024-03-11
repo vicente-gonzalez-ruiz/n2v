@@ -145,7 +145,7 @@ class N2VConfig(argparse.Namespace):
             self.train_learning_rate   = 0.0004
             self.train_batch_size      = 16
             self.train_tensorboard     = True
-            self.train_checkpoint      = 'weights_best.h5'
+            self.train_checkpoint      = 'weights_best.weights.h5'
             self.train_reduce_lr       = {'factor': 0.5, 'patience': 10}
             self.batch_norm            = True
             self.n2v_perc_pix           = 1.5
