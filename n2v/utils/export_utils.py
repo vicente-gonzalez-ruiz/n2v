@@ -164,7 +164,7 @@ def save_model_tf(model, config, model_path, config_path):
     tf.keras.models.save_model(
         model,
         model_folder_path,
-        save_format=Format.TF.value,
+        #save_format=Format.TF.value,
         include_optimizer=False,
     )
 
